@@ -156,6 +156,8 @@ class OnLSTM(nn.Module):
             layer_output_f, hx_f = self.forward_impl(input, (h_f, c_f))
             layer_output_b, hx_b = self.forward_impl(input.flip(dims=[1]), (h_b, c_b))
 
+            layer_output_b = layer_output_b.flip(dims=[1])
+
             layer_output = torch.cat([layer_output_f, layer_output_b], dim=-1)
             h = torch.stack([h_f, h_b], dim=1).reshape(-1, input.shape[0], self.hidden_size)
             c = torch.stack([c_f, c_b], dim=1).reshape(-1, input.shape[0], self.hidden_size)
